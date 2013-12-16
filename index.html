@@ -18,11 +18,15 @@
   </head>
   <body>
     
-    <div class="center">
-      <button id="refreshButton" type="button" class="btn btn-default btn-lg">
-        <span class="glyphicon glyphicon-refresh"></span>
-      </button>
-    </div>
+    <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+      <div class="center">
+        <button id="refreshButton" type="button" class="btn btn-default btn-lg">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="glyphicon glyphicon-refresh"></span>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+        </button>
+      </div>
+    </nav>
 
 
     <script>
@@ -36,8 +40,7 @@
           while(index >= 0){
             var tweet = streams.home[index];
             var tweet_id = "tweetNumber" + index;
-            var $tweet = $('<div class="tweet" id="' + tweet_id + '"></div>');
-            var $panel = $('<div style="width:33%;" class="center"><div class="panel panel-success"><div class="panel-heading">' + '@' + tweet.user + '</div><div class="panel-body">' + tweet.message + '</div><div class="panel-footer"><font size="1">' + tweet.created_at + '</font></div></div></div>');
+            var $panel = $('<div style="width:33%;" class="center tweet"><div class="panel panel-success"><div class="panel-heading">' + '@' + tweet.user + '</div><div class="panel-body">' + tweet.message + '</div><div class="panel-footer"><font size="1">' + tweet.created_at + '</font></div></div></div>');
             $panel.appendTo($body);
 
             index -= 1;
