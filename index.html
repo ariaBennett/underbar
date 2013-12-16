@@ -17,32 +17,34 @@
     <!--/Twitter Bootstrap--!>
   </head>
   <body>
-    <div id="testDiv">
-      <button type="button" class="btn btn-default btn-lg">
+    
+    <div class="center">
+      <button id="refreshButton" type="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-refresh"></span>
       </button>
     </div>
+
+
     <script>
 
       $(document).ready(function(){
         var $body = $('body');
-        $body.html('');
 
         // helper functions
         var displayTweets = function() {
           var index = streams.home.length - 1;
           while(index >= 0){
             var tweet = streams.home[index];
-            var $tweet = $('<div class="tweet"></div>');
-            $tweet.text('@' + tweet.user + '(' + tweet.created_at + ')' +': ' + tweet.message);
-            $tweet.appendTo($body);
+            var tweet_id = "tweetNumber" + index;
+            var $tweet = $('<div class="tweet" id="' + tweet_id + '"></div>');
+            var $panel = $('<div style="width:33%;" class="center"><div class="panel panel-success"><div class="panel-heading">' + '@' + tweet.user + '</div><div class="panel-body">' + tweet.message + '</div><div class="panel-footer"><font size="1">' + tweet.created_at + '</font></div></div></div>');
+            $panel.appendTo($body);
+
             index -= 1;
           }
         }
 
         // Refresh button logic
-        var $refreshButton = $('<button id="refreshButton" type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-refresh"></span></button>');
-        $refreshButton.appendTo($body);
         $('#refreshButton').click(function(){
           $(".tweet").remove();
           displayTweets();
