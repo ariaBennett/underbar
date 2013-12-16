@@ -27,31 +27,31 @@
         var $body = $('body');
         $body.html('');
 
+        // helper functions
+        var displayTweets = function() {
+          var index = streams.home.length - 1;
+          while(index >= 0){
+            var tweet = streams.home[index];
+            var $tweet = $('<div class="tweet"></div>');
+            $tweet.text('@' + tweet.user + '(' + tweet.created_at + ')' +': ' + tweet.message);
+            $tweet.appendTo($body);
+            index -= 1;
+          }
+        }
+
         // Refresh button logic
         var $refreshButton = $('<button id="refreshButton" type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-refresh"></span></button>');
         $refreshButton.appendTo($body);
         $('#refreshButton').click(function(){
           $(".tweet").remove();
           console.log("asfas");
-          var index = streams.home.length - 1;
-          while(index >= 0){
-            var tweet = streams.home[index];
-            var $tweet = $('<div class="tweet"></div>');
-            $tweet.text('@' + tweet.user + ': ' + tweet.message);
-            $tweet.appendTo($body);
-            index -= 1;
-          }
+          displayTweets();
         });
 
+        
+        // initial display of tweets
+        displayTweets();
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div class="tweet"></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
 
       });
     </script>
