@@ -27,13 +27,27 @@
         var $body = $('body');
         $body.html('');
 
+        // Refresh button logic
         var $refreshButton = $('<button id="refreshButton" type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-refresh"></span></button>');
         $refreshButton.appendTo($body);
+        $('#refreshButton').click(function(){
+          $(".tweet").remove();
+          console.log("asfas");
+          var index = streams.home.length - 1;
+          while(index >= 0){
+            var tweet = streams.home[index];
+            var $tweet = $('<div class="tweet"></div>');
+            $tweet.text('@' + tweet.user + ': ' + tweet.message);
+            $tweet.appendTo($body);
+            index -= 1;
+          }
+        });
+
 
         var index = streams.home.length - 1;
         while(index >= 0){
           var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
+          var $tweet = $('<div class="tweet"></div>');
           $tweet.text('@' + tweet.user + ': ' + tweet.message);
           $tweet.appendTo($body);
           index -= 1;
