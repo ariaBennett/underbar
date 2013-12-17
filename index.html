@@ -39,8 +39,7 @@
           var index = streams.home.length - 1;
           while(index >= 0){
             var tweet = streams.home[index];
-            var tweet_id = "tweetNumber" + index;
-            var $panel = $('<div style="width:33%;" class="center tweet"><div class="panel panel-success"><div class="panel-heading">' + '@' + tweet.user + '</div><div class="panel-body">' + tweet.message + '</div><div class="panel-footer"><font size="1">' + tweet.created_at + '</font></div></div></div>');
+            var $panel = $('<div style="width:33%;" class="center tweet"><div class="panel panel-success"><div class="panel-heading"><a href="#" class="user">' + '@' + tweet.user + '</a></div><div class="panel-body">' + tweet.message + '</div><div class="panel-footer"><font size="1">' + tweet.created_at + '</font></div></div></div>');
             $panel.appendTo($body);
 
             index -= 1;
@@ -51,6 +50,22 @@
         $('#refreshButton').click(function(){
           $(".tweet").remove();
           displayTweets();
+        });
+
+        // Click on user logic
+        $("body").on('click', 'a.user', function(){
+          var formattedUsername = ($(this).text()).substring(1);
+          console.log(streams.users[formattedUsername]);
+
+          $(".tweet").remove();
+          var index = streams.users[formattedUsername].length - 1;
+          while(index >= 0){
+            var tweet = streams.users[formattedUsername][index];
+            var $panel = $('<div style="width:33%;" class="center tweet"><div class="panel panel-success"><div class="panel-heading"><a href="#" class="user">' + '@' + tweet.user + '</a></div><div class="panel-body">' + tweet.message + '</div><div class="panel-footer"><font size="1">' + tweet.created_at + '</font></div></div></div>');
+            $panel.appendTo($body);
+
+            index -= 1;
+          }
         });
 
         
