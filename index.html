@@ -29,13 +29,34 @@
           &nbsp;&nbsp;&nbsp;&nbsp;
         </button>
         <!--Post Button--!>
-        <button id="postButton" type="button" class="btn btn-success btn-lg">
+        <button id="postButton" type="button" data-toggle="modal" data-target="#postModal" class="btn btn-success btn-lg">
           &nbsp;&nbsp;&nbsp;&nbsp;
           <span class="glyphicon glyphicon-pencil"></span>
           &nbsp;&nbsp;&nbsp;&nbsp;
         </button>
       </div>
     </nav>
+
+    <!--Post modal--!>
+    <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="postModalTitle">Post your secrets!</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-group-lg">
+              <input type="text" id="postInput" class="form-control" placeholder="Enter your message here...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close without saving</button>
+            <button type="button" id="submitButton" class="btn btn-success">Submit</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 
     <script>
@@ -63,6 +84,19 @@
         $('#refreshButton').click(function(){
           $(".tweet").remove();
           displayTweets();
+        });
+
+        // Submit button logic
+        $('#submitButton').click(function(){
+          var message = {};
+          message.message = $("#postInput").val();
+          message.user = "You";
+          message.created_at = Date.now();
+          addTweet(message);
+          $(".tweet").remove();
+          displayTweets();
+          $('#postModal').modal('hide')
+          $("#postInput").val("");
         });
 
         // Click on user logic
