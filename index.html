@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="jquery.js"></script>
+    <script src="data_generator.js"></script>
+    <script src="http://momentjs.com/downloads/moment-with-langs.min.js"></script>
+    <link href="index.css" rel="stylesheet">
+    <!--Twitter Bootstrap--!>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <!--/Twitter Bootstrap--!>
+  </head>
+  <body>
+    
+    <!--Bottom-anchored Navbar--!>
+    <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+      <div class="center">
+        <!--Refresh Button--!>
+        <button id="refreshButton" type="button" class="btn btn-default btn-lg">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="glyphicon glyphicon-refresh"></span>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+        </button>
+        <!--Post Button--!>
+        <button id="postButton" type="button" data-toggle="modal" data-target="#postModal" class="btn btn-success btn-lg">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="glyphicon glyphicon-pencil"></span>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+        </button>
+      </div>
+    </nav>
+
+    <!--Post modal--!>
+    <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="postModalTitle">Post your secrets!</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-group-lg">
+              <input type="text" id="postInput" class="form-control" placeholder="Enter your message here...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close without saving</button>
+            <button type="button" id="submitButton" class="btn btn-success">Submit</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <script>
+
+      $(document).ready(function(){
+        var $body = $('body');
+
+        // helper functions
+        var displayTweets = function() {
+          var index = streams.home.length - 1;
+          while(index >= 0){
+            var tweet = streams.home[index];
+            addPanel(tweet);
+            index -= 1;
+          }
+        }
+        // add panel
+        var addPanel = function(tweet){
+        var $panel = $('<div style="width:33%;" class="center tweet"><div class="panel panel-success"><div class="panel-heading"><a href="#" class="user">' + '@' + tweet.user + '</a></div><div class="panel-body">' + tweet.message + '</div><div class="panel-footer"><font size="1">' + moment(streams.home[0].created_at).fromNow() + '</font></div></div></div>');
+        $panel.appendTo($body);
+
+        }
+
+        // Refresh button logic
+        $('#refreshButton').click(function(){
+          $(".tweet").remove();
+          displayTweets();
+        });
+
+        // Submit button logic
+        $('#submitButton').click(function(){
+          var message = {};
+          message.message = $("#postInput").val();
+          message.user = "You";
+          message.created_at = Date.now();
+          addTweet(message);
+          $(".tweet").remove();
+          displayTweets();
+          $('#postModal').modal('hide')
+          $("#postInput").val("");
+        });
+
+        // Click on user logic
+        $("body").on('click', 'a.user', function(){
+          var formattedUsername = ($(this).text()).substring(1);
+          $(".tweet").remove();
+          var index = streams.users[formattedUsername].length - 1;
+          while(index >= 0){
+            var tweet = streams.users[formattedUsername][index];
+            addPanel(tweet);
+            index -= 1;
+          }
+        });
+
+        
+        // initial display of tweets
+        displayTweets();
+
+
+      });
+    </script>
+  </body>
+</html>
