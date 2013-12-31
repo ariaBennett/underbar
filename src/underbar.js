@@ -270,6 +270,30 @@ var _ = { };
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
+    var foundOne = false;
+    if (iterator === undefined) {
+      var iterator = function(collection) {
+        _.each(collection, function(item){
+          console.log(item);
+          if (typeof(item) === "string" && item.length !== 0) {
+            foundOne = true;
+          }
+          else if (item != false && item !== undefined && item !== null) {
+            foundOne = true;
+          }
+        });
+      };
+    }
+    _.each(collection, function(item) {
+
+      if (typeof(item) === "string" && item.length !== 0) {
+        foundOne = true;
+      }
+      else if (iterator(item) != false && item !== undefined && item !== null) {
+        foundOne = true;
+      }
+    });
+    return foundOne;
     // TIP: There's a very clever way to re-use every() here.
   };
 
