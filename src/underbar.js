@@ -143,7 +143,10 @@ var _ = { };
       }
     }
     else {
-      // Idk!
+      for (var i = 0; i < collection.length; i++) {
+        var builtFunction = collection[i][functionOrKey];
+        results.push(builtFunction.apply(collection[i], args));
+      }
     }
     return results;
   };
@@ -162,6 +165,43 @@ var _ = { };
   //     return total + number;
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
+    var realTypeof = function(target) {
+      if (Array.isArray(target) === true) {
+        return "array";
+      }
+      else if (Object.valueOf(target)().toString() === "[object Object]") {
+        return "object";
+      }
+    };
+
+    var getLength = function(item) {
+      var length = undefined;
+      if (realTypeof(collection) === "array") {
+        length = collection.length;
+      }
+      else if (realTypeof(collection) === "object") {
+        length = Object.keys(item).length;
+      }
+      return length;
+    };
+
+
+    if (accumulator === undefined || accumulator === null) {
+      accumulator = collection[0];
+    }
+
+    for (var i = 0; i < getLength(collection); i++) {
+      if (realTypeof(collection) === "array") {
+        accumulator = iterator(accumulator, collection[i]);
+        
+      }
+      else if (realTypeof(collection) === "object") {
+        var keys = Object.keys(collection);
+        accumulator = iterator(accumulator, collection[keys[i]]);
+      }
+    }
+    
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -180,6 +220,38 @@ var _ = { };
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    var realTypeof = function(target) {
+      if (Array.isArray(target) === true) {
+        return "array";
+      }
+      else if (Object.valueOf(target)().toString() === "[object Object]") {
+        return "object";
+      }
+    };
+    var getLength = function(item) {
+      var length = undefined;
+      if (realTypeof(collection) === "array") {
+        length = collection.length;
+      }
+      else if (realTypeof(collection) === "object") {
+        length = Object.keys(item).length;
+      }
+      return length;
+    };
+
+    if (getLength(collection) === 0) {
+      return true;
+    }
+
+    var result = _.reduce(collection, iterator);
+    console.log(result);
+    if (result) {
+      result = true;
+    }
+    else {
+      result = false;
+    }
+    return result;
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
