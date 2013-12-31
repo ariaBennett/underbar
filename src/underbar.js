@@ -243,15 +243,28 @@ var _ = { };
       return true;
     }
 
-    var result = _.reduce(collection, iterator);
-    console.log(result);
-    if (result) {
-      result = true;
+    if (iterator === undefined) {
+      var iterator = function(collection) {
+        return collection;
+      };
     }
-    else {
-      result = false;
+
+    if (realTypeof(collection) === "array") {
+      for (var i = 0; i < collection.length; i++) {
+        if (iterator(collection[i]) == false || iterator(collection[i]) === null || iterator(collection[i]) === undefined) {
+          return false;
+        }
+      }
     }
-    return result;
+    else if (realTypeof(collection) === "object") {
+      var keys = Object.keys(collection);
+      for (var i = 0; i < keys.length; i++) {
+        if (iterator(collection[keys[i]]) == false || iterator(collection[keys[i]]) === null || iterator(collection[keys[i]]) === undefined) {
+          return false;
+        }
+      }
+    }
+    return true;
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
